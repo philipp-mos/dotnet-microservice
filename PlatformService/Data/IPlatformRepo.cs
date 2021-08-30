@@ -3,7 +3,7 @@ using PlatformService.Models;
 
 namespace PlatformService.Data
 {
-    public interface IPlatformReo
+    public interface IPlatformRepo
     {
         bool SaveChanges();
 

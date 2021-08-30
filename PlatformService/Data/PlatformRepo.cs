@@ -5,7 +5,7 @@ using PlatformService.Models;
 
 namespace PlatformService.Data
 {
-    public class PlatformRepo : IPlatformReo
+    public class PlatformRepo : IPlatformRepo
     {
         private readonly AppDbContext _context;
 
