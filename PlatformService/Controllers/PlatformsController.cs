@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PlatformService.Data;
+using PlatformService.Dtos;
 
 namespace PlatformService.Controllers
 {
@@ -16,6 +18,28 @@ namespace PlatformService.Controllers
         {
             _repository = repository;
             _mapper = mapper;
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<PlatformReadDto>> GetPlatforms()
+        {
+            return Ok(
+                _mapper.Map<IEnumerable<PlatformReadDto>>(
+                    _repository.GetAllPlatforms()
+                )
+            );
+        }
+
+        [HttpGet("{id}", Name = "GetPlatformId")]
+        public ActionResult<PlatformReadDto> GetPlatformById(int id)
+        {
+            var platformItem = _repository.GetPlatformById(id);
+
+            if(platformItem == null) {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<PlatformReadDto>(platformItem));
         }
     }
 }
