@@ -33,4 +33,18 @@ spec:
       volumes:
         - name: mssqldb
           persistentVolumeClaim:
-            claimName: mssql-claim 
+            claimName: mssql-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: mssql
+  ports:
+    - name: mssql
+      protocol: TCP
+      port: 1433
+      targetPort: 1433
