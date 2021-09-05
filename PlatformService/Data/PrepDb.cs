@@ -24,7 +24,6 @@ namespace PlatformService.Data
                 try
                 {
                     context.Database.Migrate();
-                    return;
                 }
                 catch(Exception ex)
                 {
