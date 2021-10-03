@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using PlatformService.Dtos;
 using RabbitMQ.Client;
@@ -30,13 +32,39 @@ namespace PlatformService.AsyncDataServices
             }
             catch(Exception ex)
             {
-                
+                Console.WriteLine($"Connection failed: { ex }");
             }
         }
 
         public void PublishNewPlatform(PlatformPublishedDto platformPublishedDto)
         {
+            var message = JsonSerializer.Serialize(platformPublishedDto);
 
+            if (_connection.IsOpen)
+            {
+                SendMessage(message);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_channel.IsOpen)
+            {
+                _channel.Close();
+                _connection.Close();
+            }
+        }
+
+        private void SendMessage(string message)
+        {
+            var body = Encoding.UTF8.GetBytes(message);
+
+            _channel.BasicPublish(
+                exchange: "trigger",
+                routingKey: "",
+                basicProperties: null,
+                body: body
+            );
         }
 
         private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e)
