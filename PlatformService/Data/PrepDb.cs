@@ -27,7 +27,7 @@ namespace PlatformService.Data
                 }
                 catch(Exception ex)
                 {
-                    throw ex;
+                    Console.WriteLine($"SeedData Failed: { ex }");
                 }
             }
 
